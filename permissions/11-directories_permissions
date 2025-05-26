@@ -1,2 +1,12 @@
 #!/bin/bash
-ls -ld file1 file2 file3 folder1 folder2 folder3 | awk '{print $1}'
+
+# This script adds execute permission to all subdirectories
+# of the current directory for the group owner and all other users.
+# Regular files are not affected.
+
+# Find all entries that are directories (-type d) starting from the current directory (.).
+# For each found directory, execute the 'chmod' command.
+# 'go+x' adds execute permission for the group owner (g) and others (o).
+# '{} +' is a more efficient way to pass multiple found directories to 'chmod'
+# as arguments, rather than running 'chmod' once for each directory.
+find . -type d -exec chmod go+x {} +
