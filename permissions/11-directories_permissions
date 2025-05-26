@@ -1,2 +1,2 @@
 #!/bin/bash
-echo "$(ls -m)" | tr -d '\n'
+ls -l file1 file2 file3 folder1 folder2 folder3 | awk '{print $1}'
