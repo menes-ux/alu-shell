@@ -1,0 +1,5 @@
+#!/bin/bash
+while IFS= read -r line; do
+    first_char="${line:0:1}"
+    echo -n "$first_char"
+done
