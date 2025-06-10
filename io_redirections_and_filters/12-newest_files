@@ -1,2 +1,2 @@
 #!/bin/bash
-for file in $(ls -lt | awk '{print $9}' | head -n 10) do echo "$file" done
+ls -t1 | head -n 10
