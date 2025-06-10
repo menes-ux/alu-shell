@@ -1,5 +1,2 @@
 #!/bin/bash
-while IFS= read -r line; do
-    first_char="${line:0:1}"
-    echo -n "$first_char"
-done
+cut -c 1 | paste -s -d ''
