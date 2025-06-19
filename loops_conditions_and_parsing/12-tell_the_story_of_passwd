@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# This script reads /etc/passwd and tells a story about each user.
+
+# Set Internal Field Separator to colon to parse /etc/passwd fields
+# -r prevents backslash escapes from being interpreted
+# The fields are:
+# 1. username
+# 2. password (usually 'x' for shadowed passwords)
+# 3. user ID (UID)
+# 4. group ID (GID)
+# 5. user ID info (GECOS field)
+# 6. home directory
+# 7. command/shell
+while IFS=: read -r USERNAME PASSWORD USER_ID GROUP_ID USER_ID_INFO HOME_DIRECTORY COMMAND_SHELL; do
+    # Print the formatted story for each user
+    echo "The user $USERNAME is part of the $GROUP_ID gang, lives in $HOME_DIRECTORY and rides $COMMAND_SHELL. $USER_ID's place is protected by the passcode $PASSWORD, more info about the user here: $USER_ID_INFO"
+done < /etc/passwd
