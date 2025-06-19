@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# This script stops the '4-to_infinity_and_beyond' process using 'kill'.
+
+# pgrep -f: finds PIDs by matching a pattern in the full command line.
+# xargs kill: pipes each found PID to the 'kill' command.
+# The `ps aux | grep` method is less robust for finding a specific script,
+# and since 'pgrep' is allowed here, it's more direct.
+pgrep -f "4-to_infinity_and_beyond" | xargs kill
