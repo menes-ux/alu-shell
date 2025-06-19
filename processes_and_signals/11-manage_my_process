@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+# This script creates a PID file, prints a message indefinitely,
+# and handles SIGTERM, SIGINT, and SIGQUIT signals.
+
+PID_FILE="/var/run/myscript.pid"
+
+# --- Signal Handling ---
+
+# Function to clean up PID file and exit
+cleanup() {
+    echo "Cleaning up PID file and exiting."
+    rm -f "$PID_FILE"
+    exit 0
+}
+
+# Trap SIGTERM (signal 15) and SIGQUIT (signal 3) for cleanup and exit
+trap "echo 'I hate the kill command'; cleanup" SIGTERM
+trap "echo 'Y U no love me?!'" SIGINT
+trap "cleanup" SIGQUIT # SIGQUIT also handles cleanup and exit
+
+# --- Main Logic ---
+
+# Create PID file with current script's PID
+echo $$ > "$PID_FILE" || { echo "Error: Could not create PID file $PID_FILE"; exit 1; }
+
+echo "PID file created: $PID_FILE with PID $$"
+
+# Loop indefinitely, printing message
+while true; do
+    echo "To infinity and beyond"
+    sleep 2
+done
