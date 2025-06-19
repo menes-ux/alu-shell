@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+# This script analyzes apache-access.log to group visitors by IP and HTTP status code,
+# then displays the count, IP, and status code, sorted by occurrence.
+
+# Use awk to count occurrences of IP and HTTP status code combinations.
+# Then pipe the output to sort numerically in reverse.
+awk '{
+    # Create a unique key for each IP and status code combination
+    # The key is "$1 $9" (IP followed by HTTP status code)
+    counts[$1" "$9]++
+}
+END {
+    # Iterate through the associative array 'counts'
+    for (key in counts) {
+        # Print the count and the key (IP and HTTP status code)
+        print counts[key], key
+    }
+}' apache-access.log | sort -rn
