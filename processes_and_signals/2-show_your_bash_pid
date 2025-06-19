@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# This script displays process lines containing 'bash' to find its PID.
+# shellcheck disable=SC2009
+
+# ps aux: lists all processes in user-oriented format.
+# grep bash: filters lines containing 'bash'.
+# grep -v grep: excludes the grep command itself from the output.
+ps aux | grep bash | grep -v grep
