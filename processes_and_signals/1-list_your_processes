@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# This script displays a user-oriented, hierarchical list of all running processes.
+
+# ps auxf:
+# a = show processes for all users
+# u = display user-oriented format
+# x = show processes without a controlling tty
+# f = ASCII art process hierarchy (forest)
+ps auxf
