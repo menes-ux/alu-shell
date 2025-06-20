@@ -1,32 +1,46 @@
 #!/usr/bin/env bash
-# This script creates a PID file, prints a message indefinitely,
-# and handles SIGTERM, SIGINT, and SIGQUIT signals.
+# Init script to manage the manage_my_process daemon
 
-PID_FILE="/var/run/myscript.pid"
+PIDFILE="/var/run/my_process.pid"
 
-# --- Signal Handling ---
-
-# Function to clean up PID file and exit
-cleanup() {
-    echo "Cleaning up PID file and exiting."
-    rm -f "$PID_FILE"
-    exit 0
+start_process() {
+    ./manage_my_process &
+    echo $! > "$PIDFILE"
+    echo "manage_my_process started"
 }
 
-# Trap SIGTERM (signal 15) and SIGQUIT (signal 3) for cleanup and exit
-trap "echo 'I hate the kill command'; cleanup" SIGTERM
-trap "echo 'Y U no love me?!'" SIGINT
-trap "cleanup" SIGQUIT # SIGQUIT also handles cleanup and exit
+stop_process() {
+    if [ -f "$PIDFILE" ]; then
+        PID=$(cat "$PIDFILE")
+        kill "$PID" 2>/dev/null
+        rm -f "$PIDFILE"
+    fi
+    echo "manage_my_process stopped"
+}
 
-# --- Main Logic ---
+restart_process() {
+    if [ -f "$PIDFILE" ]; then
+        PID=$(cat "$PIDFILE")
+        kill "$PID" 2>/dev/null
+        rm -f "$PIDFILE"
+    fi
+    ./manage_my_process &
+    echo $! > "$PIDFILE"
+    echo "manage_my_process restarted"
+}
 
-# Create PID file with current script's PID
-echo $$ > "$PID_FILE" || { echo "Error: Could not create PID file $PID_FILE"; exit 1; }
-
-echo "PID file created: $PID_FILE with PID $$"
-
-# Loop indefinitely, printing message
-while true; do
-    echo "To infinity and beyond"
-    sleep 2
-done
+case "$1" in
+    start)
+        start_process
+        ;;
+    stop)
+        stop_process
+        ;;
+    restart)
+        restart_process
+        ;;
+    *)
+        echo "Usage: manage_my_process {start|stop|restart}"
+        exit 1
+        ;;
+esac
